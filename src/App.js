@@ -7,6 +7,20 @@ class App extends Component {
     text: sampleText,
   };
 
+  componentDidMount() {
+    const text = localStorage.getItem("content");
+    if (text) {
+      this.setState({ text });
+    } else {
+      this.setState({ sampleText });
+    }
+  }
+
+  componentDidUpdate() {
+    const { text } = this.state;
+    localStorage.setItem("content", text);
+  }
+
   handleChange = (e) => {
     const text = e.target.value;
     this.setState({ text });
@@ -18,6 +32,7 @@ class App extends Component {
   };
 
   render() {
+    const { text } = this.state;
     return (
       <div className="container pt-3">
         <section className="row markdown">
@@ -28,13 +43,13 @@ class App extends Component {
               name="content"
               id="content"
               rows="35"
-              value={this.state.text}
+              value={text}
             ></textarea>
           </article>
           <article className="col-12 order-1 col-md-6 order-md-2  markdown__result">
             <h1 className="markdown__result__Title">Résultat</h1>
             <div
-              dangerouslySetInnerHTML={this.renderText(this.state.text)}
+              dangerouslySetInnerHTML={this.renderText(text)}
               className="markdown__result__content"
             ></div>
           </article>
