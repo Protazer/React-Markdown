@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-
-import "./App.css";
-
 import { sampleText } from "./sampleText";
-
+import marked from "marked";
+import "./App.css";
 class App extends Component {
   state = {
     text: sampleText,
@@ -13,6 +11,12 @@ class App extends Component {
     const text = e.target.value;
     this.setState({ text });
   };
+
+  renderText = (text) => {
+    const __html = marked(text, { sanitize: true });
+    return { __html };
+  };
+
   render() {
     return (
       <div className="container pt-3">
@@ -29,7 +33,10 @@ class App extends Component {
           </article>
           <article className="col-12 order-1 col-md-6 order-md-2  markdown__result">
             <h1 className="markdown__result__Title">Résultat</h1>
-            <div className="markdown__result__content">{this.state.text}</div>
+            <div
+              dangerouslySetInnerHTML={this.renderText(this.state.text)}
+              className="markdown__result__content"
+            ></div>
           </article>
         </section>
       </div>
